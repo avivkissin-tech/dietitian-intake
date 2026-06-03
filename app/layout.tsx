@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "שאלון קליטה — תזונאי קליני",
-  description: "מלא/י את שאלון הקליטה לפני הפגישה הראשונה עם התזונאי",
+  title: "שאלון קליטה תחילת ליווי",
+  description: "מלא/י את שאלון הקליטה לפני הפגישה הראשונה עם אביב",
 };
 
 export default function RootLayout({
