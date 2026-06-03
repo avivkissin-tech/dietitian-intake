@@ -24,35 +24,33 @@ export default function FileUpload({ files, onFilesChange }: Props) {
   const [errors, setErrors] = useState<string[]>([]);
 
   const processFiles = useCallback((fileList: FileList | File[]) => {
-    const newErrors: string[] = [];
-    const newFiles: UploadedFile[] = [];
-    const fileArray = Array.from(fileList);
+  const newErrors: string[] = [];
+  const fileArray = Array.from(fileList);
 
-    fileArray.forEach((file) => {
-      if (!Object.keys(ACCEPTED_TYPES).includes(file.type)) {
-        newErrors.push(`${file.name}: סוג קובץ לא נתמך`);
-        return;
-      }
-      if (file.size > MAX_FILE_SIZE) {
-        newErrors.push(`${file.name}: קובץ גדול מדי (מקסימום 10MB)`);
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const dataUrl = e.target?.result as string;
-        onFilesChange([...files, ...newFiles, {
-          name: file.name,
-          size: file.size,
-          type: file.type,
-          dataUrl,
-        }]);
-      };
-      reader.readAsDataURL(file);
-      newFiles.push({ name: file.name, size: file.size, type: file.type });
-    });
+  fileArray.forEach((file) => {
+    if (!Object.keys(ACCEPTED_TYPES).includes(file.type)) {
+      newErrors.push(`${file.name}: סוג קובץ לא נתמך`);
+      return;
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      newErrors.push(`${file.name}: קובץ גדול מדי (מקסימום 10MB)`);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      onFilesChange([...files, {
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        dataUrl,
+      }]);
+    };
+    reader.readAsDataURL(file);
+  });
 
-    setErrors(newErrors);
-  }, [files, onFilesChange]);
+  setErrors(newErrors);
+}, [files, onFilesChange]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
